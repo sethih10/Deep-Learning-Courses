@@ -1,0 +1,17 @@
+A company called Frostbite Futures has several meeting rooms in their HQ, located in Helsinki, Finland.
+Floor 2:
+  * Aurora Borealis: 6 seats
+  * Polar Night: 12 seats, TV
+  * Midnight Sun: 4 seats, whiteboard
+Floor 5:
+  * Tunturi: 6 seats
+  * Saimaa: 14 seats, TV, whiteboard
+  * Korpi: 4 seats, whiteboard
+
+A company called Nordic Innovations has meeting rooms in their HQ, located in Espoo, Finland.
+* Kalakukko: 20 seats, TV, whiteboard
+* Karjalanpiirakka: 10 seats, TV
+* Perunalaatikko: 3 seats, whiteboard
+* Leipäjuusto: 3 seats, TV
+* Piimä: 3 seats
+* Sima: 3 seats

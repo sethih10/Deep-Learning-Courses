@@ -1,0 +1,14 @@
+[
+  {
+    "question": "How many seats are there in the Midnight Sun room in the Frostbite Futures HQ?",
+    "any": ["4 seats", "four seats"]
+  },
+  {
+    "question": "What is the location of Frostbite Futures' HQ?",
+    "any": ["Helsinki", "Helsinki, Finland"]
+  },
+  {
+    "question": "On which floor the Tunturi meeting room is located?",
+    "any": ["floor 5", "5"]
+  }
+]

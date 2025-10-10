@@ -1,0 +1,42 @@
+[
+  {
+    "question": "Who wrote the play Romeo and Juliet?",
+    "answer": "William Shakespeare"
+  },
+  {
+    "question": "What is the capital city of France?",
+    "answer": "Paris"
+  },
+  {
+    "question": "Who painted the Mona Lisa?",
+    "answer": "Leonardo da Vinci"
+  },
+  {
+    "question": "What is the smallest planet in our solar system?",
+    "answer": "Mercury"
+  },
+  {
+    "question": "How many states in USA?",
+    "answer": "50 states"
+  },
+  {
+    "question": "What is the chemical symbol for gold?",
+    "answer": "Au"
+  },
+  {
+    "question": "Who was the first President of the United States?",
+    "answer": "George Washington"
+  },
+  {
+    "question": "What is the tallest mountain in the world?",
+    "answer": "Mount Everest"
+  },
+  {
+    "question": "Which scientist developed the theory of general relativity?",
+    "answer": "Albert Einstein"
+  },
+  {
+    "question": "What is the largest ocean on Earth?",
+    "answer": "Pacific Ocean"
+  }
+]
