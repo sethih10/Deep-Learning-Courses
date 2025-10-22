@@ -1,0 +1,754 @@
+---
+title: "FiRMa I--Exercise 5"
+author: "Kaila, Toepfer"
+date: "22.10.2025"
+format: 
+  html:
+    toc: true
+    code-tools: true
+    code-line-numbers: true  
+    number-sections: false
+    mainfont: Georgia, serif
+    page-layout: article
+  pdf:  
+    geometry:
+    - left=1cm,top=1cm,bottom=1cm,right=7cm
+    number-sections: false
+    code-annotations: none
+editor: source
+---
+
+## Problem 1
+
+Let $a_1 = 0.1$, $a_2 = 0.4$ and $f(x) = x^2$. Compute the difference between
+
+$$
+f(\frac{a_1+a_2}{2}) \textrm{   and   }
+\frac{f(a_1) + f(a_2)}{2}
+$$
+
+You can write on the R console almost like you would be writing on the calculator. Generally, it is advisable to type your code into a new R script file to be able to save it for later use. A new file may be created from the menu bar of the program.
+
+### Solution
+
+Given values
+
+```{r}
+# Your code here
+```
+
+Calculate the values directly
+
+```{r}
+# Your code here
+```
+
+Alternative way, define a function
+
+```{r}
+f <- function(x) {
+  # Your code here
+}
+#
+first <- f((a1 + a2) / 2)
+second <- (f(a1) + f(a2)) / 2
+#
+first - second
+```
+
+Here we used the feature of `R` that prints the result of the last line. We can also use the `printf` command
+
+```{r}
+sprintf("f((a1+a2)/2) - (f(a1)+f(a2))/2 = %f", first - second)
+sprintf("f((a1+a2)/2) - (f(a1)+f(a2))/2 = %.3f", first - second)
+```
+
+where in the second case we rounded to three digits.
+
+## Problem 2
+
+Payoff as distribution and expectation. The aim of this exercise is to illustrate how option prices are computed, given a discrete distribution of the stock prices at maturity.
+
+Consider the example on pricing calls with the discounted expectation of the payoff function, presented in the Lecture 4. The possible stock prices at maturity are $S_T = [0.8, 0.9, 1, 1.1, 1.2]$, and the corresponding probabilities are $\mathcal{P} = [0.1, 0.3, 0.35, 0.15, 0.1]$. You can define them by writing
+
+```{r}
+# Your code here
+```
+
+Check that the total probability equals one. You can write
+
+```{r}
+# Your code here
+```
+
+Compute then the expected value of the stock price at maturity, $\mathbb{E}[S_T]$. You can give the correct weight to each of the possible stock prices by computing the dot product of the vectors S and Pr:
+
+```{r}
+# Your code here
+```
+
+Notice that because both `S` and `Pr` are $(1\times 5)$ row vectors, you must multiply `S` with the transpose of `Pr`. This is achieved with the `%*%` operator. Write `S * Pr` and look what happens.
+
+You can plot the probability mass with:
+
+```{r}
+barplot(Pr, names.arg=S, xlab = "Stock price", ylab="Probability",
+        main = "Probability mass function of stock price")
+```
+
+Compute then call option prices C from the discounted expectation of the payoff functions, assuming that the riskless interest rate is r = 0:
+
+$$
+C = e^{-rT}\mathbb{E}\left[ \max(S_T − E, 0)\right] = e^{-rT} \mathbb{E}[h(S_T )] .
+$$
+
+Define the strike price, for example `E = 0.9`.
+
+You can define the payoff function in the same file with the rest of your code:
+
+```{r}
+payoff_call <- function(st, pr, strike) {
+
+# Take max for each element of the vector
+ # Your code here
+#
+  return(expected_payoff)
+} 
+```
+
+This function computes the expected payoff $\mathbb{E} [\max(S_T-E, 0)]$ when given the stock prices, the corresponding probabilities and the strike price. On the first row, we define the function. `st`, `pr`, `strike` correspond to `S`, `Pr` and `E`. Then, we compute the payoff corresponding to each possible stock price at maturity, after which we compute the expected payoff by giving weights to each possible payoff `payoff_dist`.
+
+You can use the function by writing in the `R` console or in the script file: `payoff_call(S, Pr, E)`.
+
+```{r}
+E <- 0.9
+payoff_call(S, Pr, E)
+```
+
+You can compute call prices with different strike prices and create a new method (function) for the payoff function of a put option. The put price is given by
+
+$$
+P = e^{-rT}\mathbb{E}\left[ \max(E- S_T , 0)\right] =  e^{-rT}\mathbb{E}\left[h_P (S_T )\right].
+$$
+
+## Problem 3
+
+Normal distributions. The aim of this exercise is to get familiar with the normal distribution's probability density function and its cumulative distribution function, as well as with the corresponding functions for the log-normal distribution.
+
+All these functions are already in `R` with the names `dnorm`, `pnorm`, `dlnorm` and `plnorm`. Use the `help` command (example: `help(pnorm)`) to learn how these functions For example, the command `dnorm(t, mu, sigma)` computes the pdf at each of the values in t using the normal distribution with mean mu and standard deviation sigma.
+
+Plot a normal discreticed distribution with mean µ and variance σ². Choose first an interval $t=[a, b]$ with n support points. This means that the interval t is divided in n 1 subintervals with n discrete points. We do this with the important command
+
+```{r}
+t <- function(a,b,n){seq(from=a, to=b, length.out=n)}
+```
+
+Another way of this: `seq(from=a, to=b, by=0.01)` where by is the size of increments. As parameters, you can choose for example `a = 0`, `b = 2`, `n = 100`, `mu = 1`, `sigma = 0.2`. Once you have given values to these parameters and defined t, you can write
+
+```{r}
+a <- 0
+b <- 2
+n <- 100
+mu <- 1
+sigma <- 0.2
+```
+
+Use the normal probability density function (pdf), `dnorm`
+
+```{r}
+norm_proba_1 <- # Your code here
+plot(t(a,b,n), norm_proba_1, type="l", main="Normal distribution")
+```
+
+Try out different normal distribution parameters
+
+```{r}
+norm_proba_2 <- # Your code here
+norm_proba_3 <- # Your code here
+norm_proba_4 <- # Your code here
+```
+
+On the same chart, you can plot several normal distributions with different values for `mu` and `sigma` by giving different variable names to each distribution.
+
+To plot multiple graphs into one figure, start with `plot` and use `lines` for additional graphs
+
+```{r}
+plot(t(a,b,n), 
+     norm_proba_2, type="l", col="red", ylab="Density", 
+     main="Normal probability density functions")
+lines(t(a,b,n), norm_proba_3, col="blue")
+lines(t(a,b,n), norm_proba_4, col="green")
+```
+
+#### Cumulative distribution function
+
+```{r}
+t <- t(a,b,n)
+norm_cumu_1 <- # Your code here
+norm_cumu_2 <- # Your code here
+norm_cumu_3 <- # Your code here
+norm_cumu_4 <- # Your code here
+```
+
+```{r, fig.align='left'}
+plot(t, norm_cumu_1, type="l", 
+     ylab="Cumulative probability", 
+     main="Normal cumulative distribution functions")
+
+lines(t, norm_cumu_2, col="red")
+lines(t, norm_cumu_3, col="blue")
+lines(t, norm_cumu_4, col="green")
+```
+
+#### Lognormal distribution
+
+Use the command `help(dlnorm)` to see what the `R`manual says about the use of the lognormal probability density function.
+
+You can use the same parameters µ and σ as above, but the support t of the lognormal distribution will be different. The normal and lognormal distributions are closely related. If X is distributed lognormally with parameters $\mu$ and $\sigma$, then log(t) is distributed normally with mean $\mu$ and standard deviation $\sigma$. In your code, you can use
+
+```{r}
+tt <- seq(exp(a), exp(b), length.out=n)
+lognorm_proba_1 <- dlnorm(tt, mean=1, sd=0.4)
+lognorm_proba_2 <- dlnorm(tt, mean=1, sd=0.8)
+
+plot(tt, lognorm_proba_1, type="l", ylab="Density", 
+     main="Lognormal probability density functions")
+
+lines(tt, lognorm_proba_2, col="red")
+```
+
+Connection between normal and lognormal distributions:
+
+This should be lognormally distributed:
+
+```{r}
+plot(exp(t), log(norm_proba_1), type="l", main="Normal to lognormal")
+```
+
+This should be normally distributed:
+
+```{r}
+plot(log(tt), exp(lognorm_proba_1), type="l", main="Lognormal to normal")
+```
+
+Cumulative distribution functions:
+
+```{r}
+lognorm_cumu_1 <- # Your code here
+lognorm_cumu_2 <- # Your code here
+lognorm_cumu_3 <- # Your code here
+lognorm_cumu_4 <- # Your code here
+#
+plot(tt, lognorm_cumu_1, type="l", ylab="Cumulative probability",
+     main="Lognormal cumulative distribution functions")
+
+lines(tt, lognorm_cumu_2, col="red")
+lines(tt, lognorm_cumu_3, col="blue")
+lines(tt, lognorm_cumu_4, col="green")
+```
+
+## Problem 4: The lognormal stock price distribution
+
+In this exercise, we compute the stock price density at maturity $T$ , i.e. the density of $S_T$ , using three different models. We assume that the initial price $S_0 = 1$, the drift $\mu = r = 0.05$, the volatility $\sigma = 0.2$, and the maturity $T = 0.5$ years.
+
+(a) The stock price follows the geometric Brownian motion, so that
+
+$$
+S_T = S_0 +\int_0^T
+rS_sds +
+\int_0^T
+\sigma S_sdB_s.
+$$
+
+We partition the time interval $[0, T]$ to n discrete points with length $dt = T/n$, so that $0 = t_1 < t_2 <\dots < t_n=T$. Let us denote the stock price at time $t_i$ by $s_i$, $1 \leq i\leq n$. The Brownian motion difference $B_{t_{i+1}} − B_{t_i}$ is modelled as $z\sqrt{dt}$, where $z\sim\mathcal{N}(0, 1)$. In `R`, a hundred normally distributed random variables with mean 0 and variance 1 are obtained with the command `rnorm(100, mean = 0,sd = 1)`. You can search `?rnorm` help to get more information of this command.
+
+```{r}
+r <- 0.05 # Risk-free interest rate
+sigma <- 0.2 # Standard deviation
+T <- 0.5 # Time to maturity
+n <- 100 # Number of steps
+dt <- T/n # Incremental time
+stock <- rep(1, n) # Stock price vector, initial value 1
+```
+
+We are then ready to compute one realization of the stock price process, i.e., the discrete stock prices $s_1, s_2, \dots , s_n$. We set the initial stock price $s(1) = 1$ and use a loop
+
+```{r}
+for (i in 2:n){
+  # Your code here
+}
+```
+
+Now, we have one possible realization of the stock price process. To compute the density $S_T$ , we should repeat the propagation N times (you can use $N = 1000$ or $N = 10000$). We then set the initial prices
+
+```{r}
+N <- 10000
+multi_stock <- matrix(data=1, nrow=n, ncol=N)
+```
+
+and use two loops:
+
+```{r}
+for (j in 1:N) {
+  for (i in 2:n) {
+    # Your code here
+}
+}
+```
+
+This was little slow. Let's vectorize and choose the random values at once to gain some speed:
+
+```{r}
+z <- matrix(data=rnorm(N * (n - 1),0,1), nrow=n - 1, ncol=N)
+dr_sqrt <- sqrt(dt) 
+
+for (i in 2:n) {
+   # Your code here
+}
+```
+
+To plot the N stock price processes, you can write:
+
+```{r}
+matplot(1:n, multi_stock, type="l", lty=1, xlab="t", ylab="Stock price", 
+main="Random stock price
+processes")
+```
+
+You can also plot the final values $S_T$ in a histogram with approx. 50 discrete points:
+
+```{r}
+hist(multi_stock[n,], breaks=50, xlab="Final stock price", 
+     main="Histogram of final stock prices")
+```
+
+(b) The stock price $S_T$ is given in exponential form by
+
+$$
+S_T = S_0 \exp((r − \frac{1}{2}\sigma^2 )T + \sigma W_T ).
+$$
+
+Remember from last week and Exercise 3 that we can write this as
+
+$$
+S_T = S_0 \exp((r−\frac{1}{2}\sigma^2 )T + \sigma\sqrt{T}Z),
+$$
+
+where $Z$ is the normal random variable, $Z\sim\mathcal{N}(0, 1)$. Now, given the initial stock price $S_0 = 1$, as well as $r$, $\sigma$ and $T$ , we can directly compute a possible price at maturity, $S_T$. As above, we compute $N$ prices:
+
+```{r}
+multi_stock_direct <- rep(1, N)
+S0 <- 1
+#
+for (j in 1:N) {
+  multi_stock_direct[j] <- S0 * exp((r - 0.5 * sigma^2) * T + sigma * sqrt(T) * rnorm(1))
+}
+```
+
+The corresponding histogram is obtained by
+
+```{r}
+hist(multi_stock_direct, breaks=20, xlab="Final stock price",
+     main="Histogram of final stock prices")
+```
+
+(c) As we know that the distribution of $S_T$ is lognormal, $S_T\sim\mathcal{lN}(\log(S_0) + (r -\frac{1}{2}\sigma^2)T, \sigma^2 T)$, we don't need to compute $N$ values for $S_T$. Instead, we can use the `R` function `dlnorm`, presented in problem (3).
+
+The support for the distribution of $S_T$ can be chosen as
+
+```{r}
+nn <- 100
+t <- seq(from=0.1, to=2, length.out=nn)
+```
+
+The possible values of $S_T$ are then the n discrete points t. The probability of each of these points (probability of each price $S_T$) is obtained with the lognormal distribution `PrST`:
+
+```{r}
+PrST <- # Your code here
+```
+
+You can plot the lognormal distribution:
+
+```{r}
+plot(t, PrST, type="l", xlab="Stock price at maturity", ylab="Density", 
+     main="Probability distribution of stock price at maturity")
+```
+
+Note the different notation in `R` and the lecture slides. For a lognormally distributed random variable, $Y\sim\mathcal{lN}(\mu, \sigma^2)$, we write in R
+
+```{r}
+Y = dlnorm(t, mu, sigma)
+```
+
+using the standard deviation σ, not the variance σ².
+
+You can now compare the three different price distributions of $S_T$. Notice that the histograms in (4a) and (4b) are not scaled to illustrate probabilities (total probability must be one). You can try different values for mu, sigma, T and N. Remember to define E.
+
+Then, based on the lognormal distribution St in (4c), compute the payoff of a call with strike E and maturity T. The payoff at each support point $t_i$ is given by $h_i = \max(t_i-E, 0)$, and the corresponding probability is $PrST (t_i) = PrST (h_i)$. The expectation of the call is:
+
+$$
+\mathbb{E}[C]=\frac{M}{n}\sum_{i=1}^n PrST(h_i)*h_i
+$$
+
+where $M = \max(t) −\min(t)$. As the support t and the probability function $PrSt$ are row vectors of size $(1 \times n)$, the same result is obtained directly with
+
+$$
+\mathbb{E}[C]=\frac{M}{n}h*PrST^T
+$$
+
+## Problem 5
+
+Use the Black-Scholes formula to price both a put and a call option with strike prices $E = [30, 35, 40, 45, 50, 55, 60]$ and maturity of six months. The underlying asset spot price is $S=50$ and volatility is $\sigma = 0.5$. The risk-free interest rate is $r = 0.06$.
+
+```{r}
+# Your code here
+```
+
+We write the Black-Scholes formula note that here you are using the same `pnorm` command as when drawing cumulative normal distributions/densities. As here, we use the normal standard cumulative density, we can write either `pnorm(d1)` or `pnorm(d1,0,1)`. Here we use machine epsilon `eps` to insure that there won't be division with zero (although here there is no danger of doing that).
+
+```{r}
+eps <- .Machine$double.eps
+# Your code here
+```
+
+You can then seek a pre-existing `R` function from the `RquantLib` package by first installing the package and then activating it for the current workspace (remove`#` if you haven't installed the package already, or you can install the package from RStudio's Install procedure):
+
+```{r}
+if(!require(RQuantLib)){
+    install.packages("RQuantLib", repos="https://cloud.r-project.org")
+    library(RQuantLib)
+} 
+```
+
+Compute the corresponding prices and check that they are the same. The normal cumulative density $\mathcal{N}$ is obtained with `pnorm`. Change the values of variables: strike, maturity, interest rate etc to get an idea of how each of the variables affects call and put prices. You can plot the call prices `C` and put price `P` as functions of strike price with:
+
+```{r}
+C <- sapply(E, function(e) 
+  EuropeanOption(type="call",underlying=S,strike=e,
+                 riskFreeRate=r,maturity=T,
+                 volatility=sigma,dividendYield=0)$value)
+
+P <- sapply(E, function(e)
+  EuropeanOption(type="put",underlying=S,strike=e,
+                 riskFreeRate=r,maturity=T,
+                 volatility=sigma,dividendYield=0)$value)
+
+plot(E, C, type="l")
+lines(E, P, col="blue")
+```
+
+You can proceed in the same way with the rest of the exercise.
+
+Here we use the object `EuropeanOption` from the package `RQuantLib`. Using the prefix `$value` gives the value, and `$delta` the Delta from above. The `sapply` function is needed, because we need to feed the different strike prices one-by-one to the object.
+
+```{r}
+sapply(E, function(e) 
+  EuropeanOption(type="call",underlying=S,strike=e,
+                 riskFreeRate=r,maturity=T,
+                 volatility=sigma,dividendYield=0)$value)
+```
+
+Recall the following important formulae for your computations: $$
+C(t,S_t,E,T,\sigma) = S_t\mathcal{N}(d_1)-Ee^{-r(T-t)}\mathcal{N}(d_2)
+$$
+
+$$
+P(t,S_t,E,T,\sigma) = -S_t\mathcal{N}(-d_1)+Ee^{-r(T-t)}\mathcal{N}(-d_2)\\
+$$ where $$
+d_1 = \frac{\log(S_t/E)+(r+\sigma^2/2)(T-t)}{\sigma\sqrt{T-t}}$$ $$d_1 = \frac{\log(S_t/E)+(r-\sigma^2/2)(T-t)}{\sigma\sqrt{T-t}}$$ $$
+\mathcal{N}(z)=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^z e^{-y^2/2}dy
+$$
+
+For the following exercises, you need to load the Excel sheet `FEexercise5_2025Data.xls` from the course homepage, 'Exercise 5'.
+
+## Problem 6
+
+A three-month at-the-money call on an underlying asset with spot price $S=30$ and which pays no dividends is worth $C_{obs}=2.5$. Assume that the risk free interest rate is $r=0.06$. Compute the implied volatility $\sigma$ with accuracy of six decimal digits by using the Newton's method. Use an initial guess of $\sigma_0 = 0.5$. You may also try the bisection method on the interval $[0.0001,1]$. Search then the `R` algorithm for the implied volatility from R help by searching `EuropeanOptionImpliedVolatility` in `RQuantLib` package, compute the implied volatility with this command and compare your result.
+
+First, try to write the code yourself. Below you have the correct code. We have added machine epsilon `eps = 10⁻¹⁶` in the denominator of `d₁` to prevent division by 0. `R` can get confused when dividing something by 0.
+
+### Solution
+
+The given values are
+
+```{r}
+
+eps <- .Machine$double.eps
+#Your code here
+
+```
+
+Initial guess for implied volatility
+
+```{r}
+vola <- 0.5
+```
+
+From the lecture notes: If a function $f$ is sufficiently smooth, we'll find a zero of it via the Newton iteration by choosing an initial value $x_0$ and iterating $x_{k+1}=x_k+f(x_k)/f'(x_k)$.
+
+Iterating with Newton's method to obtain an estimate with a specific accuracy, a while loop will be used. In order to save time, you could run this for just some predetermined number of times, it works surprisingly well with just a dozen of iterations.
+
+We compute the derivative of the Black-Scholes price with respect to the volatility `CDer`, i.e., the *Vega* (you don't need to know this now). We produce this as a function, as we can reuse it later. Here `sigma` is the initial guess.
+
+```{r}
+impliedVolatility <- function(S, E, r, T, t, sigma){
+  #Your code here
+  
+  
+}
+
+```
+
+```{r}
+vola_newton <- impliedVolatility(S, E, r, T, t, vola)
+```
+
+Checking the solution with `RQuantLib`
+
+```{r}
+#Your code here
+vola_check <- EuropeanOptionImpliedVolatility(
+  type="call", value=Cobs, underlying=S, 
+  strike=E, dividendYield=0, riskFreeRate=r,
+  maturity=T, volatility=0.5)
+
+cat(sprintf(
+  "Implied volatility estimated with Newton\'s method: %.5f \n",
+  vola_newton),
+sprintf("Implied volatility with RQuantLib: %.5f \n", vola_check))
+```
+
+## Problem 7
+
+Copy the file `FiRMaExercise5_2025Data.xls` from the course homepage, 'Exercise 5'.
+
+Try the following things:
+
+(a) Plot the stock price as a function of time.
+
+(b) Plot a surface of the call prices as a function of strikes and time; you can use the command `plot_ly` from the `plotly` package.
+
+(c) Estimate the implied volatility; plot volatility smiles and a volatility surface.
+
+You'll need this piece of code (remember to install the packages, if you don't have them):
+
+```{r}
+library(dplyr, quietly = TRUE)
+library(readxl, quietly = TRUE)
+library(tidyr, quietly = TRUE)
+library(purrr, quietly = TRUE)
+library(ggplot2, quietly = TRUE)
+library(plotly, quietly = TRUE)
+library(tidyquant, quietly = TRUE)
+
+data <- read_excel("FiRMaExercise5_2025Data.xls", sheet = 1)
+```
+
+The datatype here is *tibble*, which is a variant of data frame. You can find more [here](https://tibble.tidyverse.org/index.html). Here we fix the names for `maturity` as days to maturity, `S` as the underlying, and `r` as the risk-free rate.
+
+```{r}
+data <- data %>% 
+  rename(T = names(data)[1]) %>% 
+  rename(S = names(data)[67]) %>%
+  rename(r = names(data)[68])
+```
+
+Here we were using piping `%>%` to make the formulas clearer. Let's look at our data.
+
+```{r}
+#Your code here
+head(data)
+```
+
+We want to follow the [tidy data principle](https://tidyr.tidyverse.org/articles/tidy-data.html), where each observation (one option at a certain date) has its own row, and all the variables their own columns (strike price is a variable). We drop the cases, where the options haven't opened yet. Then we still need to perform our scalings for the variables (why?).
+
+```{r}
+data1 <- data %>% 
+  pivot_longer(-c(T, r, S), names_to = "E", values_to = "Cobs" ) %>%
+  filter(!is.na(Cobs)) %>%
+  mutate(E = map_dbl(E, as.numeric)) %>%
+  mutate(r = r/100, T = T/252, S = S/1000, E = E/1000, Cobs = Cobs/1000)
+print(data1)
+```
+
+Here `T` refers to days until maturity, `S` refers to stock prices and `Cobs` to call prices, `E` for strikes and `r` for risk-free interest rates. First try to understand how the algorithm above and the Excel sheet `FiRMaExercise5_2024Data.xls` match together.
+
+Often, there are outliers, i.e, unrealistically large values in real data. For example, in the data you have, option prices should be less than 1. However, there may be some option prices that are 1000 times too large. In this exercise, you can use the following code to correct the outliers. First try to understand what this filter actually is doing.
+
+```{r}
+scaleOversized <- function(x){
+  #Your code here
+  
+  return(x)
+}
+
+data1 <- data1 %>% mutate(Cobs = map_dbl(Cobs, scaleOversized))
+```
+
+Having chosen an initial guess A, you can compute the implied volatility vector consisting of options with different strikes and maturities with either `ImpliedVolatility` or `EuropeanOptionImpliedVolatility` functions from the first Problem.
+
+Often, as with your data, some values of the implied volatility will be extremely high and plotting the surface leads to nonsense. When you have an estimate for `vola`, you should drop values below zero or over $0.6$ before saving the estimate as `impliedVol`, as this would be ridiculously high in this context (but not always!). By defining these volatilities as `NA` we can plot beautiful pictures. `R` does not try to draw the points with value `NA` in plot.
+
+### Solution
+
+a)  You can extract a column out from the tibble with the `pull()` command
+
+```{r}
+#Your code here
+
+```
+
+or you can use directly the `ggplot2` package, if you want more professional graphics.
+
+```{r}
+data1 %>% 
+  ggplot(aes(x = desc(T)*252 , y = S)) +
+  geom_line() + geom_smooth(formula = y ~ poly(x,8) , se = TRUE, method = "glm") +
+  labs(title ="Stock prices", x = "Days to maturity", y = "Value")+ theme_tq()
+
+```
+
+b)  Here we plot the observed option prices as a function of the time to maturity and the strike process. Unfortunately, `R` is not the best platform for 3D plots, partially because these are frowned upon by many in the statistics community. The nice part of using `plot_ly` and the `type = "mesh3d"` is that one can scale, zoom, and rotate the graph with your mouse (try it out). You can see that we rescaled the variables just to make the numbers more understandable.
+
+```{r}
+#Your code here
+plot <- data1 %>%
+  plot_ly(x = ~(252*T), y = ~(1000*E), z = ~(1000*Cobs),
+          type="mesh3d", intensity = c(0, 0.33, 0.66, 1), 
+          color = 0.67 , opacity=0.8 ) %>%
+  layout(title = "Observed Call prices", scene = list(
+      xaxis = list(title = "Time to maturity"),
+      yaxis = list(title = "Strike"),
+      zaxis = list(title = "Option price")
+    ))
+plot
+```
+
+We can use the defined functions from Problem 1, we'll use the ready function from `RQuantLib`, which does basically the same thing as our own function `impliedVolatility`, but faster (as it is written in C++). We will add a new column to our data frame, which contains the volatilities. We should notice, that there is not always an implied (Black-Scholes) volatility for all parameter combinations, for these will set `NA`.
+
+```{r}
+vola <- function(Cobs, S, E, r, T){
+  #
+ result <- try(EuropeanOptionImpliedVolatility(
+   type="call", value=Cobs, underlying=S,
+   strike=E, dividendYield=0, riskFreeRate=r,
+   maturity=T, volatility=0.1), silent = TRUE)
+  #
+  if(!is.numeric(result)){
+    result <- NA
+  }
+  return(result)
+}
+```
+
+```{r}
+
+data2 <- data1 %>% 
+  mutate(volatility = pmap_dbl(data1, 
+         function(Cobs, S, E, r, T) vola(Cobs, S, E, r, T) ))
+
+print(data2)
+```
+
+or more simply:
+
+```{r}
+#Your code here
+data2 <- data1 %>% mutate(volatility = pmap_dbl(data1, vola))
+```
+
+Finally, we filter away the unwanted values, i.e. volatility smaller than zero and larger than $0.6$.
+
+```{r}
+#Your code here
+data2 <- data2 %>% filter(volatility > 0 & volatility < 0.6)
+```
+
+Plotting these we can take several approaches. We can use `ggplot2`,
+
+```{r}
+#Your code here
+data2 %>% ggplot(aes(x=1000* E,y=volatility,
+                     color=252 * T, group = T)) +
+        geom_line() + ggtitle("Volatility smile") +
+        xlab("Strike") + theme(legend.position = "none") +
+        guides(colour = guide_legend(
+          override.aes = list(alpha = 1))) +
+        scale_color_gradient(low = "blue", high = "red") + 
+        theme(legend.position="none") +
+        theme_tq()
+```
+
+This is quite messy and we concentrate on just a part of the graph,
+
+```{r}
+#Your code here
+data2 %>% filter(E>=0.4) %>% filter(T<40/252) %>%
+  ggplot(aes(x=1000 * E,y=volatility,
+             color=252 * T, group = T))+
+      geom_line() +
+      ggtitle("Volatility smile for strikes
+          400-585 and maturity less than 40 days") +
+      xlab("Strike") + theme(legend.position = "none") +
+      guides(colour = guide_legend(
+        override.aes = list(alpha = 1))) +
+        scale_color_gradient(low = "blue", high = "red") + 
+        theme(legend.position="none") +
+        theme_tq()
+```
+
+Or we can use the `plot_ly` function
+
+```{r}
+#Your code here
+fig <- data2 %>%
+  group_by(T) %>%
+  plot_ly(x = ~1000 * E, y = ~volatility) %>%
+  add_lines(
+    name = "Volatility smiles", 
+    line = list(width = 1.33), 
+    alpha = 0.2, 
+    hoverinfo = "none"
+  ) %>%
+  ungroup() %>% layout(title = "Volatility smiles",
+      xaxis = list(title = "Strikes"),
+      yaxis = list(title = "Implied volatilities")
+    )
+
+fig
+```
+
+Plotting the volatility surface we get
+
+```{r}
+#Your code here
+surface <- data2 %>%
+  plot_ly(x = ~(252*T), y = ~(1000*E),
+          z = ~volatility, type="mesh3d",
+          intensity = c(0, 0.33, 0.66, 1),
+          color = 0.67 , opacity=0.8 ) %>%
+  layout(title = "Volatility surface", scene = list(
+      xaxis = list(title = "Time to maturity"),
+      yaxis = list(title = "Strike"),
+      zaxis = list(title = "Volatility")
+    ))
+surface
+```
+
+Finally, we can save our data table in the Arrow format, which keeps its structure intact, and allows sharing cross-platform (e.g. Python).
+
+```{r}
+if(!require(arrow)){
+    install.packages("arrow", repos="https://cloud.r-project.org")
+    library(arrow)
+} 
+
+write_feather(data2, "optiondata.arrow", compression = "lz4")
+```
+
+You can then read it handily:
+
+```{r}
+data_retrieved <- read_feather("optiondata.arrow")
+head(data_retrieved)
+```
